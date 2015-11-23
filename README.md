@@ -43,7 +43,7 @@ can be used to cleanup snapshots as they get too old... for example
     11 0 * * * /opt/custom/bin/zfs-prune-snapshots -p automated_daily_   7d   >> /var/log/autosnap.log 2>&1
     12 0 * * 0 /opt/custom/bin/zfs-prune-snapshots -p automated_weekly_  4w   >> /var/log/autosnap.log 2>&1
     13 0 1 * * /opt/custom/bin/zfs-prune-snapshots -p automated_monthly_ 12M  >> /var/log/autosnap.log 2>&1
-    14 0 1 1 * /opt/custom/bin/zfs-prune-snapshots -p automated_yearly   10y  >> /var/log/autosnap.log 2>&1
+    14 0 1 1 * /opt/custom/bin/zfs-prune-snapshots -p automated_yearly_  10y  >> /var/log/autosnap.log 2>&1
 
 Usage
 -----
