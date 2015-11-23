@@ -30,6 +30,21 @@ with the prefix "foo"
     # echo $?
     1
 
+This script can be best used with cron for automated snapshots
+
+    1 0 * * * /opt/custom/bin/zfs-snapshot-all automated_daily   >> /var/log/autosnap.log 2>&1
+    2 0 * * 0 /opt/custom/bin/zfs-snapshot-all automated_weekly  >> /var/log/autosnap.log 2>&1
+    3 0 1 * * /opt/custom/bin/zfs-snapshot-all automated_monthly >> /var/log/autosnap.log 2>&1
+    4 0 1 1 * /opt/custom/bin/zfs-snapshot-all automated_yearly  >> /var/log/autosnap.log 2>&1
+
+And then [zfs-prune-snapshots](https://github.com/bahamas10/zfs-prune-snapshots)
+can be used to cleanup snapshots as they get too old... for example
+
+    11 0 * * * /opt/custom/bin/zfs-prune-snapshots -p automated_daily_   7d   >> /var/log/autosnap.log 2>&1
+    12 0 * * 0 /opt/custom/bin/zfs-prune-snapshots -p automated_weekly_  4w   >> /var/log/autosnap.log 2>&1
+    13 0 1 * * /opt/custom/bin/zfs-prune-snapshots -p automated_monthly_ 12M  >> /var/log/autosnap.log 2>&1
+    14 0 1 1 * /opt/custom/bin/zfs-prune-snapshots -p automated_yearly   10y  >> /var/log/autosnap.log 2>&1
+
 Usage
 -----
 
