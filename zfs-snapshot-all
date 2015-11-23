@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+#
+# script to recursively snapshot all zpools
+#
+# Author: Dave Eddy <dave@daveeddy.com>
+# Date: November 20, 2015
+# License: MIT
+
+usage() {
+	local prog=${0##*/}
+	cat <<-EOF
+	usage: $prog [-hn] <name> [[pool1] pool2 ...]
+
+	recursively snapshot all zpools
+
+	examples
+	    # $prog foo
+	    snapshot all zpools with the prefix foo
+
+	    # $prog bar pool1 pool2
+	    snapshot zpools pool1 and pool2 with the prefix bar
+
+	options
+	    -h             print this message and exit
+	    -n             dry-run, don't actually create snapshots
+	EOF
+}
+
+dryrun=false
+while getopts 'hn' option; do
+	case "$option" in
+		h) usage; exit 0;;
+		n) dryrun=true;;
+		*) usage; exit 1;;
+	esac
+done
+shift "$((OPTIND - 1))"
+
+# prefix to use for snapshots
+name=$1
+if [[ -z $name ]]; then
+	echo 'error: name must be specified as the first argument' >&2
+	exit 1
+fi
+
+# optional list of pools
+shift
+pools=("$@")
+if (( ${#pools[@]} == 0 )); then
+	# argument list was empty, use all pools
+	while read -r zpool; do
+		pools+=("$zpool")
+	done < <(zpool list -Ho name)
+fi
+
+now=$(date +%s)
+code=0
+for zpool in "${pools[@]}"; do
+	snapshot=${zpool}@${name}_${now}
+	echo -n "zfs snapshot -r $snapshot"
+	if $dryrun; then
+		echo ' # dry-run: no action taken'
+	else
+		echo
+		zfs snapshot -r "$snapshot" || code=1
+	fi
+done
+exit "$code"
