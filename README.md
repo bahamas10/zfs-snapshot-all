@@ -48,7 +48,7 @@ can be used to cleanup snapshots as they get too old... for example
 Usage
 -----
 
-    usage: zfs-snapshot-all [-hnv] <name> [[pool1] pool2 ...]
+    usage: zfs-snapshot-all [-hnx] <name> [[pool1] pool2 ...]
 
     recursively snapshot all zpools
 
@@ -59,9 +59,15 @@ Usage
         # zfs-snapshot-all bar pool1 pool2
         snapshot zpools pool1 and pool2 with the prefix bar
 
+        # zfs-snapshot-all -x baz pool3
+        snapshot zpool pool3 with the *exact* snapshot name 'baz'
+
+
     options
         -h             print this message and exit
         -n             dry-run, don't actually create snapshots
+        -x             don't automatically append the date in epoch to
+                       the snapshot name
 
 License
 -------

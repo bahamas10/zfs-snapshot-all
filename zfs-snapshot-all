@@ -9,7 +9,7 @@
 usage() {
 	local prog=${0##*/}
 	cat <<-EOF
-	usage: $prog [-hn] <name> [[pool1] pool2 ...]
+	usage: $prog [-hnx] <name> [[pool1] pool2 ...]
 
 	recursively snapshot all zpools
 
@@ -20,17 +20,25 @@ usage() {
 	    # $prog bar pool1 pool2
 	    snapshot zpools pool1 and pool2 with the prefix bar
 
+	    # $prog -x baz pool3
+	    snapshot zpool pool3 with the *exact* snapshot name 'baz'
+
+
 	options
 	    -h             print this message and exit
 	    -n             dry-run, don't actually create snapshots
+	    -x             don't automatically append the date in epoch to
+	                   the snapshot name
 	EOF
 }
 
 dryrun=false
-while getopts 'hn' option; do
+date=true
+while getopts 'hnx' option; do
 	case "$option" in
 		h) usage; exit 0;;
 		n) dryrun=true;;
+		x) date=false;;
 		*) usage; exit 1;;
 	esac
 done
@@ -56,7 +64,12 @@ fi
 now=$(date +%s)
 code=0
 for zpool in "${pools[@]}"; do
-	snapshot=${zpool}@${name}_${now}
+	if $date; then
+		snapshot=${zpool}@${name}_${now}
+	else
+		snapshot=${zpool}@${name}
+	fi
+
 	echo -n "zfs snapshot -r $snapshot"
 	if $dryrun; then
 		echo ' # dry-run: no action taken'
