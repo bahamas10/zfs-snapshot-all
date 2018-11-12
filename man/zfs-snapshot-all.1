@@ -1,0 +1,46 @@
+.TH ZFS\-SNAPSHOT\-ALL 1 "NOV 2018" "User Commands"
+.SH NAME
+.PP
+\fB\fCzfs\-snapshot\-all\fR \- Recursively snapshot all zpools
+.SH SYNOPSIS
+.PP
+\fB\fCzfs\-snapshot\-all [OPTIONS] <name> [[pool1] pool2 ...]\fR
+.SH DESCRIPTION
+.PP
+Recursively snapshot all or a subset of zpools
+.SH OPTIONS
+.TP
+\fB\fC\-h\fR
+print this message and exit
+.TP
+\fB\fC\-n\fR
+dry\-run, don't actually create snapshots
+.TP
+\fB\fC\-x\fR
+don't automatically append the date in epoch to the snapshot name
+.TP
+\fB\fC\-V\fR
+print the version number and exit
+.SH EXAMPLES
+.TP
+\fB\fCzfs\-snapshot\-all foo\fR
+snapshot all zpools with the prefix foo
+.TP
+\fB\fCzfs\-snapshot\-all bar pool1 pool2\fR
+snapshot zpools pool1 and pool2 with the prefix bar
+.TP
+\fB\fCzfs\-snapshot\-all \-x baz pool3\fR
+snapshot zpool pool3 with the \fIexact\fP snapshot name 'baz'
+.SH BUGS
+.PP
+\[la]https://github.com/bahamas10/zfs-snapshot-all\[ra]
+.SH AUTHOR
+.PP
+\fB\fCDave Eddy <bahamas10> <dave@daveeddy.com> (https://www.daveeddy.com)\fR
+.SH SEE ALSO
+.PP
+.BR zpool (1M), 
+.BR zfs (1M)
+.SH LICENSE
+.PP
+MIT License
