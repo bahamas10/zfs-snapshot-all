@@ -68,6 +68,8 @@ Usage
         -n             dry-run, don't actually create snapshots
         -x             don't automatically append the date in epoch to
                        the snapshot name
+        -V             print the version number and exit
+
 Development Notes
 -----------------
 
