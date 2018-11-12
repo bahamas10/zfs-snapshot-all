@@ -68,6 +68,34 @@ Usage
         -n             dry-run, don't actually create snapshots
         -x             don't automatically append the date in epoch to
                        the snapshot name
+Development Notes
+-----------------
+
+### Style
+
+[shellcheck](https://www.shellcheck.net/) is used to check bash style.  Use
+`make check` to run the style checker:
+
+    $ make check
+    awk 'length($0) > 80 { exit(1); }' zfs-snapshot-all
+    shellcheck zfs-snapshot-all
+
+Bash style guide: https://www.daveeddy.com/bash/
+
+### Manpage
+
+Use `make man` to regenerate the manpage:
+
+    $ make man
+    md2man-roff man/zfs-snapshot-all.md > man/zfs-snapshot-all.1
+    $ ./man/zfs-snapshot-all.1
+    <man page opens>
+
+Manpages are generated with [md2man](https://github.com/sunaku/md2man) which
+requires `ruby-devel` to be installed.  Once `ruby` is installed, `md2man` can
+be installed locally with:
+
+    $ gem install --user-install md2man
 
 License
 -------
